@@ -9,7 +9,7 @@ in1 = 23
 in2 = 24
 in3 = 25
 in4 = 12
-en2 = 18
+en2 = 16
 temp1=1
 
 GPIO.setmode(GPIO.BCM)
@@ -24,10 +24,10 @@ GPIO.output(in2,GPIO.LOW)
 GPIO.output(in3,GPIO.LOW)
 GPIO.output(in4,GPIO.LOW)
 p1=GPIO.PWM(en1,1000)
-p2=GPIO.PWM(en2,1000)
+#p2=GPIO.PWM(en2,1000)
 
 p1.start(en1)
-p2.start(en2)
+#p2.start(en2)
 print("\n")
 print("The default speed & direction of motor is LOW & Forward.....")
 print("r-run s-stop f-forward b-backward l-low m-medium h-high e-exit")
@@ -84,19 +84,19 @@ while(1):
     elif x=='l':
         print("low")
         p1.ChangeDutyCycle(25)
-        p2.ChangeDutyCycle(25)
+        #p2.ChangeDutyCycle(25)
         x='z'
 
     elif x=='m':
         print("medium")
         p1.ChangeDutyCycle(50)
-        p2.ChangeDutyCycle(50)
+       # p2.ChangeDutyCycle(50)
         x='z'
 
     elif x=='h':
         print("high")
         p1.ChangeDutyCycle(75)
-        p2.ChangeDutyCycle(75)
+       # p2.ChangeDutyCycle(75)
         x='z'
      
     
