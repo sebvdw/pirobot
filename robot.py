@@ -4,7 +4,8 @@
 import RPi.GPIO as GPIO          
 from time import sleep
 
-en = 18
+ena = 18
+enb = 16
 in1 = 23
 in2 = 24
 in3 = 25
@@ -16,14 +17,16 @@ GPIO.setup(in1,GPIO.OUT)
 GPIO.setup(in2,GPIO.OUT)
 GPIO.setup(in3,GPIO.OUT)
 GPIO.setup(in4,GPIO.OUT)
-GPIO.setup(en,GPIO.OUT)
+GPIO.setup(ena,GPIO.OUT)
 GPIO.output(in1,GPIO.LOW)
 GPIO.output(in2,GPIO.LOW)
 GPIO.output(in3,GPIO.LOW)
 GPIO.output(in4,GPIO.LOW)
-p=GPIO.PWM(en,1000)
 
-p.start(18)
+ena=GPIO.PWM(ena,1000)
+enb=GPIO.PWM(enb,1000)
+ena.start(18)
+enb.start(16)
 print("\n")
 print("The default speed & direction of motor is LOW & Forward.....")
 print("r-run s-stop f-forward b-backward l-low m-medium h-high e-exit")
@@ -79,17 +82,20 @@ while(1):
 
     elif x=='l':
         print("low")
-        p.ChangeDutyCycle(25)
+        ena.ChangeDutyCycle(25)
+        enb.ChangeDutyCycle(25)
         x='z'
 
     elif x=='m':
         print("medium")
-        p.ChangeDutyCycle(50)
+        ena.ChangeDutyCycle(50)
+        enb.ChangeDutyCycle(50)
         x='z'
 
     elif x=='h':
         print("high")
-        p.ChangeDutyCycle(75)
+        ena.ChangeDutyCycle(75)
+        enb.ChangeDutyCycle(75)
         x='z'
      
     
