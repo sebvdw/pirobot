@@ -33,78 +33,133 @@ print("The default speed & direction of motor is LOW & Forward.....")
 print("r-run s-stop f-forward b-backward l-low m-medium h-high e-exit")
 print("\n")    
 
-while(1):
+#todo: add im mqtt connection here and hookup functions to mqtt messages
 
-    x=input()
+
+def forward():
+    print("forward")
+    GPIO.output(in1,GPIO.HIGH)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.HIGH)
+    GPIO.output(in4,GPIO.LOW)
+
+def backward():
+    print("backward")
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.HIGH)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.HIGH)
+
+def left():
+    print("left")
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.HIGH)
+    GPIO.output(in3,GPIO.HIGH)
+    GPIO.output(in4,GPIO.LOW)
+
+def right():
+    print("right")
+    GPIO.output(in1,GPIO.HIGH)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.HIGH)
+
+def stop():
+    print("stop")
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.LOW)
+
+def low():
+    print("low")
+    ena.ChangeDutyCycle(25)
+    enb.ChangeDutyCycle(25)
+
+def medium():
+    print("medium")
+    ena.ChangeDutyCycle(50)
+    enb.ChangeDutyCycle(50)
+
+def high():
+    print("high")
+    ena.ChangeDutyCycle(75)
+    enb.ChangeDutyCycle(75)
+
+# while(1):
+#     x=input()
+#     if x=='s':
+#         print("stop")
+#         GPIO.output(in1,GPIO.LOW)
+#         GPIO.output(in2,GPIO.LOW)
+#         GPIO.output(in3,GPIO.LOW)
+#         GPIO.output(in4,GPIO.LOW)
+#         x='z'
+
+#     elif x=='f':
+#         print("forward")
+#         GPIO.output(in1,GPIO.HIGH)
+#         GPIO.output(in2,GPIO.LOW)
+#         GPIO.output(in3,GPIO.HIGH)
+#         GPIO.output(in4,GPIO.LOW)
+#         x='z'
+
+#     elif x=='b':
+#         print("backward")
+#         GPIO.output(in1,GPIO.LOW)
+#         GPIO.output(in2,GPIO.HIGH)
+#         GPIO.output(in3,GPIO.LOW)
+#         GPIO.output(in4,GPIO.HIGH)
+#         x='z'
+
+#     elif x=='l':
+#         print("left")
+#         GPIO.output(in1,GPIO.LOW)
+#         GPIO.output(in2,GPIO.HIGH)
+#         GPIO.output(in3,GPIO.HIGH)
+#         GPIO.output(in4,GPIO.LOW)
+#         x='z'
     
-    if x=='r':
-        print("run")
-        if(temp1==1):
-         GPIO.output(in1,GPIO.HIGH)
-         GPIO.output(in2,GPIO.LOW)
-         GPIO.output(in3,GPIO.HIGH)
-         GPIO.output(in4,GPIO.LOW)
-         print("forward")
-         x='z'
-        else:
-         GPIO.output(in1,GPIO.LOW)
-         GPIO.output(in2,GPIO.HIGH)
-         GPIO.output(in3,GPIO.LOW)
-         GPIO.output(in4,GPIO.HIGH)
-         print("backward")
-         x='z'
+#     elif x=='r':
+#         print("right")
+#         GPIO.output(in1,GPIO.HIGH)
+#         GPIO.output(in2,GPIO.LOW)
+#         GPIO.output(in3,GPIO.LOW)
+#         GPIO.output(in4,GPIO.HIGH)
+#         x='z'
 
+#     elif x=='b':
+#         print("backward")
+#         GPIO.output(in1,GPIO.LOW)
+#         GPIO.output(in2,GPIO.HIGH)
+#         GPIO.output(in3,GPIO.LOW)
+#         GPIO.output(in4,GPIO.HIGH)
+#         x='z'
 
-    elif x=='s':
-        print("stop")
-        GPIO.output(in1,GPIO.LOW)
-        GPIO.output(in2,GPIO.LOW)
-        GPIO.output(in3,GPIO.LOW)
-        GPIO.output(in4,GPIO.LOW)
-        x='z'
+#     elif x=='sl':
+#         print("low")
+#         ena.ChangeDutyCycle(25)
+#         enb.ChangeDutyCycle(25)
+#         x='z'
 
-    elif x=='f':
-        print("forward")
-        GPIO.output(in1,GPIO.HIGH)
-        GPIO.output(in2,GPIO.LOW)
-        GPIO.output(in3,GPIO.HIGH)
-        GPIO.output(in4,GPIO.LOW)
-        temp1=1
-        x='z'
+#     elif x=='sm':
+#         print("medium")
+#         ena.ChangeDutyCycle(50)
+#         enb.ChangeDutyCycle(50)
+#         x='z'
 
-    elif x=='b':
-        print("backward")
-        GPIO.output(in1,GPIO.LOW)
-        GPIO.output(in2,GPIO.HIGH)
-        GPIO.output(in3,GPIO.LOW)
-        GPIO.output(in4,GPIO.HIGH)
-        temp1=0
-        x='z'
-
-    elif x=='l':
-        print("low")
-        ena.ChangeDutyCycle(25)
-        enb.ChangeDutyCycle(25)
-        x='z'
-
-    elif x=='m':
-        print("medium")
-        ena.ChangeDutyCycle(50)
-        enb.ChangeDutyCycle(50)
-        x='z'
-
-    elif x=='h':
-        print("high")
-        ena.ChangeDutyCycle(75)
-        enb.ChangeDutyCycle(75)
-        x='z'
+#     elif x=='sh':
+#         print("high")
+#         ena.ChangeDutyCycle(75)
+#         enb.ChangeDutyCycle(75)
+#         x='z'
      
     
-    elif x=='e':
-        GPIO.cleanup()
-        print("GPIO Clean up")
-        break
+#     elif x=='e':
+#         GPIO.cleanup()
+#         print("GPIO Clean up")
+#         break
     
-    else:
-        print("<<<  wrong data  >>>")
-        print("please enter the defined data to continue.....")
+#     else:
+#         print("<<<  wrong data  >>>")
+#         print("please enter the defined data to continue.....")
