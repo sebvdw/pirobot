@@ -83,110 +83,42 @@ def high():
     ena.ChangeDutyCycle(75)
     enb.ChangeDutyCycle(75)
 
+import socket
 
-# Define the server's IP address and port
-server_ip = '192.168.45.1'  # Replace with the server's IP address
-server_port = 8000  # Replace with the server's port
-
-# Create a socket object
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Connect to the server
-client_socket.connect((server_ip, server_port))
-
-# Main loop to receive instructions from the server
-while True:
-    # Receive data from the server
-    data = client_socket.recv(1024).decode()
-
-    # Check the received instruction and execute the corresponding function
-    if data == 'forward':
+def move(command):
+    if command == "forward":
         forward()
-    elif data == 'backward':
+        # Add code here for moving forward
+    elif command == "backward":
         backward()
-    elif data == 'left':
+        # Add code here for moving backward
+    elif command == "left":
         left()
-    elif data == 'right':
+        # Add code here for moving left
+    elif command == "right":
         right()
+        # Add code here for moving right
+    elif command == "stop":
+        stop()
+        # Add code here for stopping
     else:
         print("Invalid command")
 
-# Close the socket connection
-client_socket.close()
+def start_client():
+    server_address = ('192.168.45.1', 8000)
 
-# while(1):
-#     x=input()
-#     if x=='s':
-#         print("stop")
-#         GPIO.output(in1,GPIO.LOW)
-#         GPIO.output(in2,GPIO.LOW)
-#         GPIO.output(in3,GPIO.LOW)
-#         GPIO.output(in4,GPIO.LOW)
-#         x='z'
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(server_address)
+    print("Connected to the server.")
 
-#     elif x=='f':
-#         print("forward")
-#         GPIO.output(in1,GPIO.HIGH)
-#         GPIO.output(in2,GPIO.LOW)
-#         GPIO.output(in3,GPIO.HIGH)
-#         GPIO.output(in4,GPIO.LOW)
-#         x='z'
+    while True:
+        try:
+            command = client_socket.recv(1024).decode()
+            move(command)
+        except:
+            print("Error receiving data. Closing connection.")
+            break
 
-#     elif x=='b':
-#         print("backward")
-#         GPIO.output(in1,GPIO.LOW)
-#         GPIO.output(in2,GPIO.HIGH)
-#         GPIO.output(in3,GPIO.LOW)
-#         GPIO.output(in4,GPIO.HIGH)
-#         x='z'
+    client_socket.close()
 
-#     elif x=='l':
-#         print("left")
-#         GPIO.output(in1,GPIO.LOW)
-#         GPIO.output(in2,GPIO.HIGH)
-#         GPIO.output(in3,GPIO.HIGH)
-#         GPIO.output(in4,GPIO.LOW)
-#         x='z'
-    
-#     elif x=='r':
-#         print("right")
-#         GPIO.output(in1,GPIO.HIGH)
-#         GPIO.output(in2,GPIO.LOW)
-#         GPIO.output(in3,GPIO.LOW)
-#         GPIO.output(in4,GPIO.HIGH)
-#         x='z'
-
-#     elif x=='b':
-#         print("backward")
-#         GPIO.output(in1,GPIO.LOW)
-#         GPIO.output(in2,GPIO.HIGH)
-#         GPIO.output(in3,GPIO.LOW)
-#         GPIO.output(in4,GPIO.HIGH)
-#         x='z'
-
-#     elif x=='sl':
-#         print("low")
-#         ena.ChangeDutyCycle(25)
-#         enb.ChangeDutyCycle(25)
-#         x='z'
-
-#     elif x=='sm':
-#         print("medium")
-#         ena.ChangeDutyCycle(50)
-#         enb.ChangeDutyCycle(50)
-#         x='z'
-
-#     elif x=='sh':
-#         print("high")
-#         ena.ChangeDutyCycle(75)
-#         enb.ChangeDutyCycle(75)
-#         x='z'
-    
-#     elif x=='e':
-#         GPIO.cleanup()
-#         print("GPIO Clean up")
-#         break
-    
-#     else:
-#         print("<<<  wrong data  >>>")
-#         print("please enter the defined data to continue.....")
+start_client()
