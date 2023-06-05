@@ -1,20 +1,38 @@
 import socket
+import threading
 
 def handle_client(client_socket):
     # This function will handle individual client connections
     # Modify this function to implement your server's behavior
     # For example, you can receive data from the client and send a response
 
-    # Receive data from the client
-    data = client_socket.recv(1024).decode()
-    print("Received data:", data)
+    while True:
+        # Receive data from the client
+        data = client_socket.recv(1024).decode()
+        print("Received data:", data)
 
-    # Send a response back to the client
-    response = "Hello, welcome to the server!"
-    client_socket.send(response.encode())
+        # Take input from the console
+        user_input = input("Enter a command (forward, back, right, left): ")
 
-    # Close the client socket
-    client_socket.close()
+        # Map the input to a response
+        if user_input.lower() == "forward":
+            response = "forward"
+        elif user_input.lower() == "back":
+            response = "back"
+        elif user_input.lower() == "right":
+            response = "right"
+        elif user_input.lower() == "left":
+            response = "left"
+        else:
+            response = "Invalid command"
+
+        # Send the response back to the client
+        client_socket.send(response.encode())
+
+        # Close the client socket if the client sends an empty message
+        if not data:
+            client_socket.close()
+            break
 
 def run_server():
     # Set up the server socket
@@ -34,8 +52,9 @@ def run_server():
         client_socket, client_address = server_socket.accept()
         print("Client connected:", client_address)
 
-        # Handle the client connection in a separate thread or process
-        handle_client(client_socket)
+        # Create a new thread for the client connection
+        client_thread = threading.Thread(target=handle_client, args=(client_socket,))
+        client_thread.start()
 
 if __name__ == '__main__':
     run_server()

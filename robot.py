@@ -1,6 +1,6 @@
 # Python Script
 # https://www.electronicshub.org/raspberry-pi-l298n-interface-tutorial-control-dc-motor-l298n-raspberry-pi/
-
+import socket
 import RPi.GPIO as GPIO          
 from time import sleep
 
@@ -32,9 +32,6 @@ print("\n")
 print("The default speed & direction of motor is LOW & Forward.....")
 print("r-run s-stop f-forward b-backward l-low m-medium h-high e-exit")
 print("\n")    
-
-#todo: add im mqtt connection here and hookup functions to mqtt messages
-
 
 def forward():
     print("forward")
@@ -85,6 +82,37 @@ def high():
     print("high")
     ena.ChangeDutyCycle(75)
     enb.ChangeDutyCycle(75)
+
+
+# Define the server's IP address and port
+server_ip = '192.168.45.1'  # Replace with the server's IP address
+server_port = 8000  # Replace with the server's port
+
+# Create a socket object
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to the server
+client_socket.connect((server_ip, server_port))
+
+# Main loop to receive instructions from the server
+while True:
+    # Receive data from the server
+    data = client_socket.recv(1024).decode()
+
+    # Check the received instruction and execute the corresponding function
+    if data == 'forward':
+        forward()
+    elif data == 'backward':
+        backward()
+    elif data == 'left':
+        left()
+    elif data == 'right':
+        right()
+    else:
+        print("Invalid command")
+
+# Close the socket connection
+client_socket.close()
 
 # while(1):
 #     x=input()
