@@ -14,7 +14,9 @@ def handle_client(client_socket):
 
 def start_server():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('192.168.45.1', 8000))
+    server_host = '192.168.45.1'
+    server_port = 8000
+    server_socket.bind((server_host, server_port))
     server_socket.listen(1)
     print("Server listening on port 8000...")
 
