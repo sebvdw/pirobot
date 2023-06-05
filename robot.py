@@ -153,7 +153,6 @@ def high():
 #         ena.ChangeDutyCycle(75)
 #         enb.ChangeDutyCycle(75)
 #         x='z'
-     
     
 #     elif x=='e':
 #         GPIO.cleanup()
