@@ -10,13 +10,11 @@ def run_client():
     client_socket.connect((server_host, server_port))
     print("Connected to {}:{}".format(server_host, server_port))
 
-    # Send data to the server
-    message = "Hello from the client!"
-    client_socket.send(message.encode())
-
-    # Receive the server's response
-    response = client_socket.recv(1024).decode()
-    print("Received response:", response)
+    # Send and receive messages with the server
+    while True:
+        # Receive the server's response
+        response = client_socket.recv(1024).decode()
+        print("Received response:", response)
 
     # Close the client socket
     client_socket.close()
