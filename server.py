@@ -10,7 +10,7 @@ def handle_client(client_socket):
     print("Received data:", data)
 
     # Send a response back to the client
-    response = "Hello from the server!"
+    response = "Hello, welcome to the server!"
     client_socket.send(response.encode())
 
     # Close the client socket
@@ -19,8 +19,8 @@ def handle_client(client_socket):
 def run_server():
     # Set up the server socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_host = 'localhost'  # Change this to your desired host
-    server_port = 12345  # Change this to your desired port
+    server_host = '192.168.45.1'  # Change this to your desired host
+    server_port = 8000  # Change this to your desired port
 
     # Bind the server socket to a specific address and port
     server_socket.bind((server_host, server_port))
