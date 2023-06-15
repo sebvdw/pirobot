@@ -1,16 +1,25 @@
-# Python Script
-# https://www.electronicshub.org/raspberry-pi-l298n-interface-tutorial-control-dc-motor-l298n-raspberry-pi/
 import socket
 import RPi.GPIO as GPIO          
 from time import sleep
+from ultrasonicsensor import ultrasonicRead
+import sys
+import time
+from target import *
 
+#Motors
 ena = 18
 enb = 16
 in1 = 23
 in2 = 24
 in3 = 25
 in4 = 12
-temp1=1
+
+#Ultrasonic Sensor
+TRIG = 20
+ECHO = 21
+
+#Servo
+servoPin = 26
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(in1,GPIO.OUT)
@@ -23,6 +32,12 @@ GPIO.output(in1,GPIO.LOW)
 GPIO.output(in2,GPIO.LOW)
 GPIO.output(in3,GPIO.LOW)
 GPIO.output(in4,GPIO.LOW)
+GPIO.setup(TRIG, GPIO.OUT)
+GPIO.setup(ECHO, GPIO.IN)
+
+GPIO.setup(servoPin, GPIO.OUT)
+servo = GPIO.PWM(servoPin, 50)
+servo.start(7)
 
 ena=GPIO.PWM(ena,1000)
 enb=GPIO.PWM(enb,1000)
@@ -32,6 +47,9 @@ print("\n")
 print("The default speed & direction of motor is LOW & Forward.....")
 print("r-run s-stop f-forward b-backward l-low m-medium h-high e-exit")
 print("\n")    
+
+# targets list
+targets = {}
 
 def forward():
     print("forward")
@@ -113,12 +131,59 @@ def start_client():
 
     while True:
         try:
-            command = client_socket.recv(1024).decode()
-            move(command)
-        except:
-            print("Error receiving data. Closing connection.")
-            break
+            # command = client_socket.recv(1024).decode()
+            # move(command)
+            
+            # rotate from 0 to 180
+            for angle in range(0, 180):
+                
+                distance = ultrasonicRead(GPIO, TRIG, ECHO)
+                
+                # change the condition if the range is changed
+                if distance != -1 and distance <= 50:
+                    targets[angle] = Target(angle, distance)
+                    
 
-    client_socket.close()
+                angle = 180 - angle
+                dc = 1.0 / 18.0 * angle + 2
+                servo.ChangeDutyCycle(dc)
 
-start_client()
+                print(distance)
+
+                time.sleep(0.001)
+                
+
+            # rotate from 180 to 0
+            for angle in range(180, 0, -1):
+                
+                distance = ultrasonicRead(GPIO, TRIG, ECHO)
+                
+                # change the condition if the range is changed
+                if distance != -1 and distance <= 50:
+                    targets[angle] = Target(angle, distance)
+                
+
+                angle = 180 - angle
+                dc = 1.0 / 18.0 * angle + 2
+                servo.ChangeDutyCycle(dc)
+
+                print(distance)
+
+                time.sleep(0.001)
+            
+        except KeyboardInterrupt:
+            print('Radar Exit')
+            servo.stop()
+            GPIO.cleanup()
+            client_socket.close()
+            
+        except Exception as e:
+            print(e)
+            print('Radar Exit')
+            servo.stop()
+            GPIO.cleanup()
+            client_socket.close()
+
+start_client()        
+    
+sys.exit()
