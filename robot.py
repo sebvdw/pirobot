@@ -131,58 +131,57 @@ def start_client():
 
     while True:
         try:
-            # command = client_socket.recv(1024).decode()
-            # move(command)
+            command = client_socket.recv(1024).decode()
+            move(command)
             
-            # rotate from 0 to 180
-            for angle in range(0, 180):
+        #     # rotate from 0 to 180
+        #     for angle in range(0, 180):
                 
-                distance = ultrasonicRead(GPIO, TRIG, ECHO)
+        #         distance = ultrasonicRead(GPIO, TRIG, ECHO)
                 
-                # change the condition if the range is changed
-                if distance != -1 and distance <= 50:
-                    targets[angle] = Target(angle, distance)
+        #         # change the condition if the range is changed
+        #         if distance != -1 and distance <= 50:
+        #             targets[angle] = Target(angle, distance)
                     
 
-                angle = 180 - angle
-                dc = 1.0 / 18.0 * angle + 2
-                servo.ChangeDutyCycle(dc)
+        #         angle = 180 - angle
+        #         dc = 1.0 / 18.0 * angle + 2
+        #         servo.ChangeDutyCycle(dc)
 
-                print(distance)
+        #         print(distance)
 
-                time.sleep(0.001)
+        #         time.sleep(0.001)
                 
 
-            # rotate from 180 to 0
-            for angle in range(180, 0, -1):
+        #     # rotate from 180 to 0
+        #     for angle in range(180, 0, -1):
                 
-                distance = ultrasonicRead(GPIO, TRIG, ECHO)
+        #         distance = ultrasonicRead(GPIO, TRIG, ECHO)
                 
-                # change the condition if the range is changed
-                if distance != -1 and distance <= 50:
-                    targets[angle] = Target(angle, distance)
+        #         # change the condition if the range is changed
+        #         if distance != -1 and distance <= 50:
+        #             targets[angle] = Target(angle, distance)
                 
 
-                angle = 180 - angle
-                dc = 1.0 / 18.0 * angle + 2
-                servo.ChangeDutyCycle(dc)
+        #         angle = 180 - angle
+        #         dc = 1.0 / 18.0 * angle + 2
+        #         servo.ChangeDutyCycle(dc)
 
-                print(distance)
+        #         print(distance)
 
-                time.sleep(0.001)
+        #         time.sleep(0.001)
             
         except KeyboardInterrupt:
             print('Radar Exit')
-            servo.stop()
             GPIO.cleanup()
             client_socket.close()
             
-        except Exception as e:
-            print(e)
-            print('Radar Exit')
-            servo.stop()
-            GPIO.cleanup()
-            client_socket.close()
+        # except Exception as e:
+        #     print(e)
+        #     print('Radar Exit')
+        #     servo.stop()
+        #     GPIO.cleanup()
+        #     client_socket.close()
 
 start_client()        
     
